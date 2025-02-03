@@ -108,199 +108,210 @@ class _HomepageState extends State<Homepage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'NEWS',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    DateFormat('MMM d, y').format(DateTime.now()),
-                    style: const TextStyle(
-                        fontFamily: 'PTSerif',
-                        fontSize: 16,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'NEWS',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              const Text(
-                'Hey, James!',
-                style: TextStyle(
-                    color: Color.fromARGB(255, 126, 126, 126),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Discover Latest News',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 42,
-                  fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      DateFormat('MMM d, y').format(DateTime.now()),
+                      style: const TextStyle(
+                          fontFamily: 'PTSerif',
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 254, 254),
-                        borderRadius: BorderRadius.circular(4),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 1,
-                            offset: const Offset(2, 1),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: searchController,
-                        onChanged: filterData,
-                        decoration: InputDecoration(
-                          hintText: 'Search news...',
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey[500]),
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 16),
-                        ),
-                      ),
-                    ),
+                const SizedBox(height: 30),
+                const Text(
+                  'Hey, James!',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 126, 126, 126),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Discover Latest News',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 42,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(width: 4),
-                  Container(
-                    height: 45,
-                    width: 45,
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(4),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 2,
-                          offset: const Offset(1, 1),
-                        ),
-                      ],
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.search, color: Colors.white),
-                      onPressed: () {
-                        filterData(searchController.text);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 36),
-              SizedBox(
-                height: 80,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    final category = categories[index];
-                    final isSelected = selectedCategory == category['label'];
-                    return GestureDetector(
-                      onTap: () => selectCategory(category['label']),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
                       child: Container(
-                        width: 74,
-                        margin: const EdgeInsets.only(right: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundColor:
-                                  isSelected ? primaryColor : Colors.grey[200],
-                              child: Icon(
-                                category['icon'],
-                                color: isSelected
-                                    ? Colors.white
-                                    : Colors.grey[600],
-                                size: 24,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              category['label'],
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: isSelected
-                                    ? primaryColor
-                                    : Colors.grey[600],
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                                fontSize: 12,
-                              ),
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 254, 254),
+                          borderRadius: BorderRadius.circular(4),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.08),
+                              blurRadius: 1,
+                              offset: const Offset(2, 1),
                             ),
                           ],
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 36),
-              Expanded(
-                child: isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : errorMessage.isNotEmpty
-                        ? Center(child: Text(errorMessage))
-                        : RefreshIndicator(
-                            onRefresh: fetchNews,
-                            child: filteredArticles.isEmpty
-                                ? const Center(child: Text('No articles found'))
-                                : ListView.builder(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
-                                    itemCount: filteredArticles.length,
-                                    itemBuilder: (context, index) {
-                                      var article = filteredArticles[index];
-                                      return article['urlToImage'] != null &&
-                                              article['title'] != null &&
-                                              article['publishedAt'] != null
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ArticleDetailsPage(
-                                                      article: article,
-                                                      value: searchController
-                                                          .value.text,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: ArticleCard(
-                                                image: article['urlToImage'],
-                                                title: article['title'],
-                                                date: article['publishedAt'],
-                                              ),
-                                            )
-                                          : const SizedBox.shrink();
-                                    },
-                                  ),
+                        child: TextField(
+                          controller: searchController,
+                          onChanged: filterData,
+                          decoration: InputDecoration(
+                            hintText: 'Search news...',
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(color: Colors.grey[500]),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16),
                           ),
-              ),
-            ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Container(
+                      height: 45,
+                      width: 45,
+                      decoration: BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: BorderRadius.circular(4),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 2,
+                            offset: const Offset(1, 1),
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.search, color: Colors.white),
+                        onPressed: () {
+                          filterData(searchController.text);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 36),
+                SizedBox(
+                  height: 80,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
+                      final isSelected = selectedCategory == category['label'];
+                      return GestureDetector(
+                        onTap: () => selectCategory(category['label']),
+                        child: Container(
+                          width: 74,
+                          margin: const EdgeInsets.only(right: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 25,
+                                backgroundColor: isSelected
+                                    ? primaryColor
+                                    : Colors.grey[200],
+                                child: Icon(
+                                  category['icon'],
+                                  color: isSelected
+                                      ? Colors.white
+                                      : Colors.grey[600],
+                                  size: 24,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                category['label'],
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: isSelected
+                                      ? primaryColor
+                                      : Colors.grey[600],
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 36),
+                SizedBox(
+                  height: 250,
+                  child: Expanded(
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : errorMessage.isNotEmpty
+                            ? Center(child: Text(errorMessage))
+                            : RefreshIndicator(
+                                onRefresh: fetchNews,
+                                child: filteredArticles.isEmpty
+                                    ? const Center(
+                                        child: Text('No articles found'))
+                                    : ListView.builder(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8),
+                                        itemCount: filteredArticles.length,
+                                        itemBuilder: (context, index) {
+                                          var article = filteredArticles[index];
+                                          return article['urlToImage'] !=
+                                                      null &&
+                                                  article['title'] != null &&
+                                                  article['publishedAt'] != null
+                                              ? GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ArticleDetailsPage(
+                                                          article: article,
+                                                          value:
+                                                              searchController
+                                                                  .value.text,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: ArticleCard(
+                                                    image:
+                                                        article['urlToImage'],
+                                                    title: article['title'],
+                                                    date:
+                                                        article['publishedAt'],
+                                                  ),
+                                                )
+                                              : const SizedBox.shrink();
+                                        },
+                                      ),
+                              ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
